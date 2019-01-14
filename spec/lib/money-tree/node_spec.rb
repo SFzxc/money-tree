@@ -18,7 +18,7 @@ describe MoneyTree::Master do
       end
     end
 
-    context "testnet" do
+    context "bitcoin testnet" do
       before do
         @master = MoneyTree::Master.new network: :bitcoin_testnet
       end
@@ -800,6 +800,26 @@ describe MoneyTree::Master do
           @node = MoneyTree::Node.from_bip32 "tpubD6NzVbkrYhZ4WM42MZZmUZ7LjxyjBf5bGjEeLf9nJnMZqocGJWu94drvpqWsE9jE7k3h22v6gjpPGnqgBrqwGsRYwDXVRfQ2M9dfHbXP5zA"
           @subnode = @node.node_for_path('m/1')
           expect(@subnode.to_bip32(network: :bitcoin_testnet)).to eql("tpubDA7bCxb3Nrcz2ChXyPqXxbG4q5oiAZUHR7wD3LAiXukuxmT65weWw84XYmjhkJTkJEM6LhNWioWTpKEkQp7j2fgVccj3PPc271xHDeMsaTY")
+        end
+      end
+    end
+
+    describe "deriving a child node" do
+      describe "#node_for_path" do
+        it "generates xpchain testnet address" do
+          @node = MoneyTree::Node.from_bip32 "tprv8ZgxMBicQKsPd7Uf69XL1XwhmjHopUGep8GuEiJDZmbQz6o58LninorQAfcKZWARbtRtfnLcJ5MQ2AtHcQJCCRUcMRvmDUjyEmNUWwx8UbK"
+          expect(@node.node_for_path("m/0'/0'/0'").to_address(network: :xpchain_testnet)).to eql("xcQmb895Wa9ztBCnDsjj3RbX5WkRLbLSc5")
+          expect(@node.node_for_path("m/0'/0'/1'").to_address(network: :xpchain_testnet)).to eql("xawm2Mp5LbXywSDGXiQVsmVDn6mFJSpuwC")
+          expect(@node.node_for_path("m/0'/0'/1500'").to_address(network: :xpchain_testnet)).to eql("xuEukCgsXhWwM3vDiv6TLcb7CtnaUPxGdi")
+          expect(@node.node_for_path("m/0'/0'/0").to_address(network: :xpchain_testnet)).to eql("xhZS1kiuxEqq5f1adCfrRb9EGoqGcxYb4W")
+          expect(@node.node_for_path("m/0'/0'/1").to_address(network: :xpchain_testnet)).to eql("xeaxfcYJ1vNFmzLfPduiKcar6iXJU9Bzce")
+          expect(@node.node_for_path("m/0'/0'/1500").to_address(network: :xpchain_testnet)).to eql("xcnAnZ8xKLf8jLn3sCpRJgeRHHtBNpGy5q")
+          expect(@node.node_for_path("m/1/1/0'").to_address(network: :xpchain_testnet)).to eql("xbGGqvuNMV9EbEaGrj1QUwR5iR8yACdDiX")
+          expect(@node.node_for_path("m/1/1/1'").to_address(network: :xpchain_testnet)).to eql("xXucQFT1qmJNfVzMNrtxT2jeTfLx5EpB7w")
+          expect(@node.node_for_path("m/1/1/1500'").to_address(network: :xpchain_testnet)).to eql("xg2PC74XkFXST17MYBy7BvnBnF2LsteG1x")
+          expect(@node.node_for_path("m/1/1/0").to_address(network: :xpchain_testnet)).to eql("xknmPQdjKCaZ5DvmVG1QYfJkyRmA2a1nry")
+          expect(@node.node_for_path("m/1/1/1").to_address(network: :xpchain_testnet)).to eql("xpwQX3mubsgVB2tnYm1zvtH8sgEkBADpwE")
+          expect(@node.node_for_path("m/1/1/1500").to_address(network: :xpchain_testnet)).to eql("xgXRSjnwsgX7Fb4k5REhYxq1inUDLQmk7Q")
         end
       end
     end
